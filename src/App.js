@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Navgation from "./customer/components/Navigation/Navigation";
 
