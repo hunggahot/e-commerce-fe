@@ -13,7 +13,15 @@ const MainCarousel = () => {
     />
   ));
 
-  return <AliceCarousel items={items} />;
+  return (
+    <AliceCarousel
+      items={items}
+      disableButtonsControls
+      autoPlay
+      autoPlayInterval={3000}
+      infinite
+    />
+  );
 };
 
 export default MainCarousel;
