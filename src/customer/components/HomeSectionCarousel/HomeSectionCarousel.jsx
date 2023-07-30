@@ -2,6 +2,7 @@ import React from 'react';
 import HomeSectionCard from '../HomeSectionCard/HomeSectionCard';
 import AliceCarousel from 'react-alice-carousel';
 import { Button } from '@mui/material';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 const HomeSectionCarousel = () => {
     const responsive = {
@@ -15,7 +16,27 @@ const HomeSectionCarousel = () => {
     return (
         <div className="relative px-4 lg:px-8">
             <div className="relative p-5">
-                <AliceCarousel items={items} disableButtonsControls responsive={responsive} />
+                <AliceCarousel
+                    items={items}
+                    disableButtonsControls
+                    responsive={responsive}
+                />
+                <Button
+                    variant="contained"
+                    className="z-50 bg-white"
+                    sx={{
+                        position: 'absolute',
+                        top: '8rem',
+                        right: '0rem',
+                        transform: 'translateX(50%) rotate(90deg)',
+                        bgcolor: 'white',
+                    }}
+                    aria-label="next"
+                >
+                    <KeyboardArrowLeftIcon
+                        sx={{ transform: 'rotate(90deg)', color: 'black' }}
+                    />
+                </Button>
             </div>
         </div>
     );
