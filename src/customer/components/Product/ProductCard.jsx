@@ -1,30 +1,34 @@
 import React from 'react';
 import './ProductCard.scss';
 
-const ProductCard = () => {
+const ProductCard = ({ product }) => {
   return (
     <div className="productCard w-[15rem] m-3 transition-all cursor-pointer">
       <div className="h-[20rem]">
         <img
           className="h-full w-full object-cover object-left-top"
-          src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/07/20/0e653008a81c21dd21570acbe2c439e0.JPG"
+          src={product.imageUrl}
           alt=""
         />
       </div>
 
       <div className="textPart bg-white p-3">
         <div>
-          <div className="font-bold opacity-60">ÁO THUN ĐÍNH REN</div>
-          <p>SKU: 57M8283</p>
+          <div className="font-bold opacity-60">{product.brand}</div>
+          <p>{product.title}</p>
         </div>
         <div className="flex items-center space-x-2">
           <p className="font-semibold">
-            325.000<sup>đ</sup>
+            {product.discountedPrice}
+            <sup>đ</sup>
           </p>
           <p className="line-through opacity-50">
-            650.000<sup>đ</sup>
+            {product.price}
+            <sup>đ</sup>
           </p>
-          <p className="text-green-600 font-semibold">50% off</p>
+          <p className="text-green-600 font-semibold">
+            {product.discountPercent}% off
+          </p>
           <p></p>
         </div>
       </div>
