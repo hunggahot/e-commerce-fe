@@ -271,4 +271,34 @@ export const women_aodai = [
         description:
             'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quod ab consequatur fugit provident sit corporis, tempore ipsam ullam blanditiis necessitatibus perferendis aut labore culpa explicabo, eveniet aliquam nihil minima sint?',
     },
+
+    {
+        imageUrl: '',
+        brand: '',
+        title: '',
+        color: '',
+        discountedPrice: 499,
+        price: 1499,
+        discountPercent: 66,
+        size: [
+            {
+                name: 'S',
+                quantity: 20,
+            },
+            {
+                name: 'M',
+                quantity: 30,
+            },
+            {
+                name: 'L',
+                quantity: 50,
+            },
+        ],
+        quantity: 100,
+        topLabelCategory: 'Women',
+        secondLabelCategory: 'Clothing',
+        thirdLabelCategory: 'women_aodai',
+        description:
+            'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quod ab consequatur fugit provident sit corporis, tempore ipsam ullam blanditiis necessitatibus perferendis aut labore culpa explicabo, eveniet aliquam nihil minima sint?',
+    },
 ];

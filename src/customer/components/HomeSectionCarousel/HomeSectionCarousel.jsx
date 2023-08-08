@@ -4,9 +4,8 @@ import AliceCarousel from 'react-alice-carousel';
 import { Button } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { useState } from 'react';
-import { women_aodai } from '../../../data/women_aodai';
 
-const HomeSectionCarousel = () => {
+const HomeSectionCarousel = ({ data, sectionName }) => {
     const [activeIndex, setActiveIndex] = useState(0);
 
     const responsive = {
@@ -20,12 +19,15 @@ const HomeSectionCarousel = () => {
 
     const syncActiveIndex = ({ item }) => setActiveIndex(item);
 
-    const items = women_aodai
-        .slice(0, 10)
+    const items = data
+        .slice(0, 6)
         .map((item) => <HomeSectionCard product={item} />);
 
     return (
         <div className="border">
+            <h2 className="text-2xl font-extrabold text-gray-800 py-5">
+                {sectionName}
+            </h2>
             <div className="relative p-5">
                 <AliceCarousel
                     items={items}
