@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import Navigation from './customer/components/Navigation/Navigation';
 import HomePage from './customer/pages/HomePage/HomePage';
 import Footer from './customer/components/Footer/Footer';
