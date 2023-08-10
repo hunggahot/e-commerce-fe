@@ -93,13 +93,14 @@ export const women_aodai = [
   },
 
   {
-    imageUrl: '',
-    brand: '',
-    title: '',
-    color: '',
-    discountedPrice: 499,
-    price: 1499,
-    discountPercent: 66,
+    imageUrl:
+      'https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/07/19/0bcc6d40fcafff09e34bc7a2fc79454c.jpg',
+    brand: 'Ladies',
+    title: 'ÁO THUN BLOOME',
+    color: 'Trắng Ngà',
+    discountedPrice: 455000,
+    price: 65000,
+    discountPercent: 30,
     size: [
       {
         name: 'S',
@@ -119,7 +120,7 @@ export const women_aodai = [
     secondLabelCategory: 'Clothing',
     thirdLabelCategory: 'women_aodai',
     description:
-      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quod ab consequatur fugit provident sit corporis, tempore ipsam ullam blanditiis necessitatibus perferendis aut labore culpa explicabo, eveniet aliquam nihil minima sint?',
+      'Thuộc dòng sản phẩm Ladies trẻ trung, hiện đại, thiế kế áo thun in chữ tinh giản nhưng đủ sành điệu để nàng tự tin xuống phố.',
   },
 
   {
