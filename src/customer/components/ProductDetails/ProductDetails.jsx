@@ -6,6 +6,7 @@ import { Box, Button, Grid, LinearProgress, Rating } from '@mui/material';
 import ProductReviewCard from './ProductReviewCard';
 import HomeSectionCard from '../HomeSectionCard/HomeSectionCard';
 import { women_aodai } from '../../../data/women_aodai';
+import { useNavigate } from 'react-router-dom';
 
 const reviews = { href: '#', average: 4, totalCount: 117 };
 
@@ -16,6 +17,12 @@ function classNames(...classes) {
 export default function ProductDetails() {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+
+  const navigate = useNavigate();
+
+  const handleAddToCart = () => {
+    navigate('/cart');
+  };
 
   return (
     <div className="bg-white lg:px-20">
@@ -190,6 +197,7 @@ export default function ProductDetails() {
                 </div>
 
                 <Button
+                  onClick={handleAddToCart}
                   variant="contained"
                   sx={{ px: '2rem', py: '1rem', bgcolor: '#9155fd' }}
                 >
