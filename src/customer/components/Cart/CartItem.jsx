@@ -3,27 +3,29 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import React from 'react';
 
-const CartItem = () => {
+const CartItem = ({ item }) => {
   return (
     <div className="p-5 shadow-lg border rounded-md">
       <div className="flex items-center">
         <div className="w-[5rem] h-[5rem] lg:w-[9rem] lg:h-[9rem]">
           <img
             className="w-full h-full object-cover object-top"
-            src="https://pubcdn.ivymoda.com/files/product/thumab/1400/2023/05/17/b530a02260b03cecd01b1ace2210a30d.jpg"
+            src={item.product.imageUrl}
             alt=""
           />
         </div>
 
         <div className="ml-5 space-y-1">
-          <p className="font-semibold">Men Slim Mid Rise Black Jeans</p>
-          <p className="opacity-70">Size: L, White</p>
-          <p className="opacity-70 mt-2">Seller: Crishtailitoo fashoon</p>
+          <p className="font-semibold">{item.product.title}</p>
+          <p className="opacity-70">Size: {item.size}, White</p>
+          <p className="opacity-70 mt-2">Seller: {item.product.brand}</p>
 
           <div className="flex space-x-5 items-center text-gray-900 pt-6">
-            <p className="font-semibold">199.000đ</p>
-            <p className="opacity-50 line-through">211.000đ</p>
-            <p className="text-green-600 font-semibold">5% Off</p>
+            <p className="font-semibold">{item.price}đ</p>
+            <p className="opacity-50 line-through">{item.discountedPrice}đ</p>
+            <p className="text-green-600 font-semibold">
+              {item.discountPercent}% Off
+            </p>
           </div>
         </div>
       </div>

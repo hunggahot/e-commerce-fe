@@ -17,6 +17,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Pagination,
 } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -38,7 +39,7 @@ export default function Product() {
   const navigate = useNavigate();
   const param = useParams();
   const dispatch = useDispatch();
-  const { product } = useSelector((store) => store);
+  const { products } = useSelector((store) => store);
 
   const decodedQueryString = decodeURIComponent(location.search);
   const searchParams = new URLSearchParams(decodedQueryString);
@@ -49,6 +50,13 @@ export default function Product() {
   const sortValue = searchParams.get('sort');
   const pageNumber = searchParams.get('page') || 1;
   const stock = searchParams.get('stock');
+
+  const handlePaginationChange = (event, value) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set('page', value);
+    const query = searchParams.toString();
+    navigate({ search: `${query}` });
+  };
 
   const handleFilter = (value, sectionId) => {
     const searchParams = new URLSearchParams(location.search);
@@ -432,12 +440,22 @@ export default function Product() {
               {/* Product grid */}
               <div className="lg:col-span-4 w-full">
                 <div className="flex flex-wrap justify-center bg-white py-5">
-                  {product.products &&
-                    product.products?.content?.map((item) => (
+                  {products.products &&
+                    products.products?.content?.map((item) => (
                       <ProductCard product={item} />
                     ))}
                 </div>
               </div>
+            </div>
+          </section>
+
+          <section className="w-full px-[3.6rem]">
+            <div className="px-4 py-5 flex justify-center">
+              <Pagination
+                count={products.products?.totalPages}
+                color="secondary"
+                onChange={handlePaginationChange}
+              />
             </div>
           </section>
         </main>
