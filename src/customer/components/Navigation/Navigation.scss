@@ -1,0 +1,26 @@
+/* Navigation.scss */
+/* Your SCSS styles */
+.nav-wrapper {
+    position: relative;
+}
+
+.popover-panel {
+    position        : absolute;
+    top             : 100%;
+    left            : 0;
+    width           : 100%;
+    /* Make the panel full width */
+    background-color: white;
+    border          : 1px solid #ccc;
+    box-shadow      : 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding         : 1rem;
+    z-index         : 10;
+
+    &.open {
+        display: block;
+    }
+
+    /* Other styles... */
+}
+
+/* Define styles for other elements in your component as needed */
