@@ -39,12 +39,16 @@ const LoginForm = () => {
               Welcome back! Please enter your details
             </small>
             {/* Form */}
-            <form className="mt-4">
+            <form onSubmit={handleSubmit} className="mt-4">
               <div className="mb-3">
                 <label className="mb-2 block text-xs font-semibold">
                   Email
                 </label>
                 <input
+                  required
+                  id="email"
+                  name="email"
+                  autoComplete="email"
                   type="email"
                   placeholder="Enter your email"
                   className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
@@ -55,6 +59,10 @@ const LoginForm = () => {
                   Password
                 </label>
                 <input
+                  required
+                  id="password"
+                  name="password"
+                  autoComplete="password"
                   type="password"
                   placeholder="*****"
                   className="block w-full rounded-md border border-gray-300 focus:border-purple-700 focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500"
@@ -77,9 +85,12 @@ const LoginForm = () => {
                 </a>
               </div>
               <div className="mb-3">
-                <button className="mb-1.5 block w-full text-center text-white bg-purple-700 hover:bg-purple-900 px-2 py-1.5 rounded-md">
+                <Button
+                  type="submit"
+                  className="mb-1.5 block w-full text-center text-white bg-purple-700 hover:bg-purple-900 px-2 py-1.5 rounded-md"
+                >
                   Sign in
-                </button>
+                </Button>
                 <button className="flex flex-wrap justify-center w-full border border-gray-300 hover:border-gray-500 px-2 py-1.5 rounded-md">
                   <img
                     className="w-5 mr-2"
@@ -94,9 +105,12 @@ const LoginForm = () => {
               <span className="text-xs text-gray-400 font-semibold">
                 Don't have account?
               </span>
-              <a href="#" className="text-xs font-semibold text-purple-700">
-                Sign up
-              </a>
+              <Button
+                className="text-xs font-semibold text-purple-700"
+                onClick={() => navigate('/register')}
+              >
+                Sign Up
+              </Button>
             </div>
           </div>
         </div>

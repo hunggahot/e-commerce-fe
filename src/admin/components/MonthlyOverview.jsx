@@ -18,25 +18,25 @@ const salesData = [
   {
     stats: '245k',
     title: 'Sales',
-    color: 'primary',
+    color: '#E5D68A',
     icon: <TrendingUp sx={{ fontSize: '1.75rem' }} />,
   },
   {
     stats: '12.5K',
     title: 'Customers',
-    color: 'success',
+    color: '#22CB5C',
     icon: <AccountCircle sx={{ fontSize: '1.75rem' }} />,
   },
   {
     stats: '1.54K',
     title: 'Products',
-    color: 'warning',
+    color: '#DE4839',
     icon: <SettingsCellIcon sx={{ fontSize: '1.75rem' }} />,
   },
   {
     stats: '88K',
     title: 'Revenue',
-    color: 'info',
+    color: '#12B0E8',
     icon: <AttachMoneyIcon sx={{ fontSize: '1.75rem' }} />,
   },
 ];
@@ -57,8 +57,8 @@ const renderStats = () => {
             width: 44,
             height: 44,
             boxShadow: 3,
-            color: 'white',
-            background: `${item.color}`,
+            color: 'common.white',
+            backgroundColor: `${item.color}`,
           }}
         >
           {item.icon}
@@ -85,9 +85,9 @@ const MonthlyOverview = () => {
         }
         subheader={
           <Typography variant="body2">
-            <Box component="span" sx={{ fontWeight: 600, mx: 2 }}>
+            <Box component="span" sx={{ fontWeight: 600 }}>
               Total 48.5% growth
-            </Box>
+            </Box>{' '}
             this month
           </Typography>
         }

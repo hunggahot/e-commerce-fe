@@ -1,4 +1,5 @@
 import {
+  DELETE_PRODUCTS_SUCCESS,
   FIND_PRODUCTS_FAILURE,
   FIND_PRODUCTS_REQUEST,
   FIND_PRODUCTS_SUCCESS,
@@ -30,6 +31,14 @@ export const customerProductReducer = (state = initialState, action) => {
 
     case FIND_PRODUCT_BY_ID_SUCCESS:
       return { ...state, loading: false, error: null, product: action.payload };
+
+    case DELETE_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        deletedProduct: action.payload,
+      };
 
     case FIND_PRODUCTS_FAILURE:
     case FIND_PRODUCT_BY_ID_FAILURE:
