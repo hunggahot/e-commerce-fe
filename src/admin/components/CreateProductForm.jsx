@@ -1,4 +1,12 @@
-import { Grid, TextField, Typography } from '@mui/material';
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createProduct } from '../../state/Product/Action';
@@ -18,7 +26,7 @@ const CreateProductForm = () => {
     color: '',
     discountedPrice: '',
     price: '',
-    discountePercent: '',
+    discountPercent: '',
     size: initialSizes,
     quantity: '',
     topLevelCategory: '',
@@ -98,6 +106,98 @@ const CreateProductForm = () => {
               value={productData.color}
               onChange={handleChange}
             />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Quantity"
+              name="quantity"
+              value={productData.quantity}
+              onChange={handleChange}
+              type="number"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Price"
+              name="price"
+              value={productData.price}
+              onChange={handleChange}
+              type="number"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Discounted Price"
+              name="discountedPrice"
+              value={productData.discountedPrice}
+              onChange={handleChange}
+              type="number"
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Discounte Percent"
+              name="discountPercent"
+              value={productData.discountPercent}
+              onChange={handleChange}
+              type="number"
+            />
+          </Grid>
+
+          <Grid item xs={6} sm={4}>
+            <FormControl fullWidth>
+              <InputLabel>Top Level Category</InputLabel>
+              <Select
+                name="topLevelCategory"
+                value={productData.topLevelCategory}
+                onChange={handleChange}
+                label="Top Level Category"
+              >
+                <MenuItem value="men">Men</MenuItem>
+                <MenuItem value="women">Women</MenuItem>
+                <MenuItem value="kids">Kids</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={6} sm={4}>
+            <FormControl fullWidth>
+              <InputLabel>Second Level Category</InputLabel>
+              <Select
+                name="secondLevelCategory"
+                value={productData.secondLevelCategory}
+                onChange={handleChange}
+                label="Second Level Category"
+              >
+                <MenuItem value="clothing">Clothing</MenuItem>
+                <MenuItem value="accessories">Accessories</MenuItem>
+                <MenuItem value="brands">Brands</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={6} sm={4}>
+            <FormControl fullWidth>
+              <InputLabel>Third Level Category</InputLabel>
+              <Select
+                name="thirdLevelCategory"
+                value={productData.secondLevelCategory}
+                onChange={handleChange}
+                label="Third Level Category"
+              >
+                <MenuItem value="tops">Tops</MenuItem>
+                <MenuItem value="women_dress">Dresses</MenuItem>
+                <MenuItem value="t-shirts">T-Shirts</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
       </form>
