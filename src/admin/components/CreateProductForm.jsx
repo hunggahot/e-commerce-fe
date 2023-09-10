@@ -1,4 +1,5 @@
 import {
+  Button,
   FormControl,
   Grid,
   InputLabel,
@@ -10,7 +11,6 @@ import {
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createProduct } from '../../state/Product/Action';
-import { Fragment } from 'react';
 
 const initialSizes = [
   { name: 'S', quantity: 0 },
@@ -60,12 +60,12 @@ const CreateProductForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createProduct({ data: productData }));
+    dispatch(createProduct(productData));
     console.log(productData);
   };
 
   return (
-    <Fragment>
+    <div className="p-10">
       <Typography
         variant="h3"
         sx={{ textAlign: 'center' }}
@@ -84,6 +84,16 @@ const CreateProductForm = () => {
               label="Image URL"
               name="imageUrl"
               value={productData.imageUrl}
+              onChange={handleChange}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Brand"
+              name="brand"
+              value={productData.brand}
               onChange={handleChange}
             />
           </Grid>
@@ -189,7 +199,7 @@ const CreateProductForm = () => {
               <InputLabel>Third Level Category</InputLabel>
               <Select
                 name="thirdLevelCategory"
-                value={productData.secondLevelCategory}
+                value={productData.thirdLevelCategory}
                 onChange={handleChange}
                 label="Third Level Category"
               >
@@ -199,9 +209,59 @@ const CreateProductForm = () => {
               </Select>
             </FormControl>
           </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="outlined-multiline-static"
+              label="Description"
+              multiline
+              name="description"
+              rows={3}
+              onChange={handleChange}
+              value={productData.description}
+            />
+          </Grid>
+
+          {productData.size.map((size, index) => (
+            <Grid container item spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Size Name"
+                  name="name"
+                  value={size.name}
+                  onChange={(event) => handleSizeChange(event, index)}
+                  required
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Quantity"
+                  name="size_quantity"
+                  type="number"
+                  onChange={(event) => handleSizeChange(event, index)}
+                  required
+                  fullWidth
+                />
+              </Grid>
+            </Grid>
+          ))}
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              sx={{ p: 1.8 }}
+              className="py-20"
+              size="large"
+              type="submit"
+            >
+              Add New Product
+            </Button>
+          </Grid>
         </Grid>
       </form>
-    </Fragment>
+    </div>
   );
 };
 
