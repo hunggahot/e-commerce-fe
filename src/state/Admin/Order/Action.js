@@ -20,8 +20,8 @@ import {
   SHIP_ORDER_SUCCESS,
 } from './ActionType';
 
-export const getOrders = (reqData) => {
-  console.log('get all orders ', reqData);
+export const getOrders = () => {
+  console.log('get all orders ');
   return async (dispatch) => {
     dispatch({ type: GET_ORDERS_REQUEST });
     try {
@@ -90,7 +90,7 @@ export const cancelOrder = (orderId) => async (dispatch) => {
 
 export const deleteOrder = (orderId) => {
   return async (dispatch) => {
-    dispatch({ type: DELIVERED_ORDER_REQUEST });
+    dispatch({ type: DELETE_ORDER_REQUEST });
     try {
       const { data } = await api.delete(
         `/api/v1/admin/orders/${orderId}/delete`,
