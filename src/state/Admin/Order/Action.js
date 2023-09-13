@@ -39,7 +39,7 @@ export const confirmOrder = (orderId) => async (dispatch) => {
   dispatch({ type: CONFIRMED_ORDER_REQUEST });
 
   try {
-    const response = await api.put(`/api/v1/admin/orders/${orderId}/comfirmed`);
+    const response = await api.put(`/api/v1/admin/orders/${orderId}/confirmed`);
 
     const data = response.data;
     console.log('comfirm_order ', data);

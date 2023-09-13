@@ -1,12 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrders } from '../../state/Admin/Order/Action';
+import {
+  confirmOrder,
+  deleteOrder,
+  deliveredOrder,
+  getOrders,
+  shipOrder,
+} from '../../state/Admin/Order/Action';
 import {
   Avatar,
   AvatarGroup,
   Button,
   Card,
   CardHeader,
+  Menu,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -17,18 +25,57 @@ import {
 } from '@mui/material';
 
 const OrdersTable = () => {
+  const [anchorEl, setAnchorEl] = useState([]);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (e, index) => {
+    const newAnchorElArray = [...anchorEl];
+    newAnchorElArray[index] = e.currentTarget;
+    setAnchorEl(newAnchorElArray);
+  };
+  const handleClose = (index) => {
+    const newAnchorElArray = [...anchorEl];
+    newAnchorElArray[index] = null;
+    setAnchorEl(newAnchorElArray);
+  };
+
   const dispatch = useDispatch();
 
   const { adminOrder } = useSelector((store) => store);
 
+  const handleShippedOrder = (orderId) => {
+    dispatch(shipOrder(orderId));
+    handleClose();
+  };
+
+  const handleConfirmedOrder = (orderId) => {
+    dispatch(confirmOrder(orderId));
+    handleClose();
+  };
+
+  const handleDeliveredOrder = (orderId) => {
+    dispatch(deliveredOrder(orderId));
+    handleClose();
+  };
+
+  const handleDeleteOrder = (orderId) => {
+    dispatch(deleteOrder(orderId));
+    handleClose();
+  };
+
   useEffect(() => {
     dispatch(getOrders());
-  }, []);
+  }, [
+    adminOrder.confirmed,
+    adminOrder.shipped,
+    adminOrder.delivered,
+    adminOrder.deletedOrder,
+  ]);
 
   console.log('admin orders ', adminOrder);
 
   return (
-    <div className="p-5">
+    <div className="p-10">
       <Card className="mt-2 bg-[#1b1b1b]">
         <CardHeader title="All Products" />
       </Card>
@@ -39,36 +86,90 @@ const OrdersTable = () => {
             <TableRow>
               <TableCell>Image</TableCell>
               <TableCell align="left">Title</TableCell>
-              <TableCell align="left">Category</TableCell>
+              <TableCell align="left">Id</TableCell>
               <TableCell align="left">Price</TableCell>
-              <TableCell align="left">Quantity</TableCell>
+              <TableCell align="left">Status</TableCell>
+              <TableCell align="left">Update</TableCell>
+              <TableCell align="left">Status</TableCell>
 
               <TableCell align="left">Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {adminOrder.orders?.map((item) => (
+            {adminOrder.orders?.map((item, index) => (
               <TableRow
                 key={item.name}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell align="left">
-                  <AvatarGroup>
-                    {item.orderItem.map((orderItem) => (
-                      <Avatar src={item.imageUrl}></Avatar>
+                <TableCell align="" className="">
+                  <AvatarGroup max={3} sx={{ justifyContent: 'start' }}>
+                    {item.orderItems?.map((orderItem) => (
+                      <Avatar src={orderItem.product.imageUrl}></Avatar>
                     ))}
                   </AvatarGroup>
                 </TableCell>
                 <TableCell align="left" scope="row">
-                  {item.title}
+                  {item.orderItems?.map((orderItem) => (
+                    <p>{orderItem.product.title}</p>
+                  ))}
+                  {/* {item.title} */}
                 </TableCell>
-                {/* <TableCell align="left">{item.category.name}</TableCell> */}
+                <TableCell align="left">{item.id}</TableCell>
                 <TableCell align="left">{item.totalPrice}</TableCell>
-                {/* <TableCell align="left">{item.quantity}</TableCell> */}
+                <TableCell align="left">
+                  <span
+                    className={`text-white px-5 py-2 rounded-full 
+                ${
+                  item.orderStatus === 'CONFIRMED'
+                    ? 'bg-[#369236]'
+                    : item.orderStatus === 'SHIPPED'
+                    ? 'bg-[#4141ff]'
+                    : item.orderStatus === 'PLACED'
+                    ? 'bg-[#02B290]'
+                    : item.orderStatus === 'PENDING'
+                    ? 'bg-[gray]'
+                    : 'bg-[#015720]'
+                }`}
+                  >
+                    {' '}
+                    {item.orderStatus}
+                  </span>{' '}
+                </TableCell>
 
                 <TableCell align="left">
                   <Button
-                    onClick={() => handleProductDelete(item.id)}
+                    id="basic-button"
+                    aria-haspopup="true"
+                    onClick={(e) => handleClick(e, index)}
+                    aria-controls={`basic-menu-${item.id}`}
+                    aria-expanded={Boolean(anchorEl[index])}
+                  >
+                    Status
+                  </Button>
+                  <Menu
+                    id={`basic-menu-${item.id}`}
+                    anchorEl={anchorEl[index]}
+                    open={Boolean(anchorEl[index])}
+                    onClose={() => handleClose(index)}
+                    MenuListProps={{
+                      'aria-labelledby': 'basic-button',
+                    }}
+                  >
+                    <MenuItem onClick={() => handleConfirmedOrder(item.id)}>
+                      Confirmed Order
+                    </MenuItem>
+                    <MenuItem onClick={() => handleShippedOrder(item.id)}>
+                      Shipped Order
+                    </MenuItem>
+                    <MenuItem onClick={() => handleDeliveredOrder(item.id)}>
+                      Delivered Order
+                    </MenuItem>
+                  </Menu>
+                </TableCell>
+
+                <TableCell align="left">
+                  <Button
+                    onClick={() => handleDeleteOrder(item.id)}
                     variant="outlined"
                   >
                     Delete

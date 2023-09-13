@@ -76,7 +76,7 @@ const adminOrderReducer = (state = initialState, action) => {
     case DELIVERED_ORDER_SUCCESS:
       return {
         ...state,
-        deliverd: action.payload,
+        delivered: action.payload,
         isLoading: false,
       };
 
@@ -103,7 +103,7 @@ const adminOrderReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        orders: state.orders.filter((order) => order.id !== action.payload),
+        deletedOrder: action.payload,
       };
     case DELETE_ORDER_FAILURE:
       return { ...state, loading: false, error: action.payload };
