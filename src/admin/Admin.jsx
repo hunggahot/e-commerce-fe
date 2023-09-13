@@ -1,20 +1,16 @@
 import {
   Box,
   CssBaseline,
-  Drawer,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Toolbar,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import EmailIcon from '@mui/icons-material/Email';
-import InboxIcon from '@mui/icons-material/Inbox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AdminDashboard from './components/AdminDashboard';
@@ -29,7 +25,7 @@ const menu = [
   { name: 'Customers', path: '/admin/customers', icon: <DashboardIcon /> },
   { name: 'Orders', path: '/admin/orders', icon: <DashboardIcon /> },
   {
-    name: 'AddProduct',
+    name: 'Add Product',
     path: '/admin/product/create',
     icon: <DashboardIcon />,
   },
@@ -87,7 +83,7 @@ const Admin = () => {
       <div className="relative flex h-[100vh]">
         <CssBaseline />
 
-        <div className="w-[15%] border border-r-gray-300 h-full fixed top-0">
+        <div className="shadow-lg shadow-gray-600 w-[15%] h-full fixed top-0">
           {drawer}
         </div>
 

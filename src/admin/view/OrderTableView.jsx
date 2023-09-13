@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  confirmOrder,
-  deleteOrder,
-  deliveredOrder,
-  getOrders,
-  shipOrder,
-} from '../../state/Admin/Order/Action';
+import { getOrders } from '../../state/Admin/Order/Action';
 import {
   Avatar,
   AvatarGroup,
-  Button,
   Card,
   CardHeader,
-  Menu,
-  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -24,44 +15,10 @@ import {
   TableRow,
 } from '@mui/material';
 
-const OrdersTable = () => {
-  const [anchorEl, setAnchorEl] = useState([]);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (e, index) => {
-    const newAnchorElArray = [...anchorEl];
-    newAnchorElArray[index] = e.currentTarget;
-    setAnchorEl(newAnchorElArray);
-  };
-  const handleClose = (index) => {
-    const newAnchorElArray = [...anchorEl];
-    newAnchorElArray[index] = null;
-    setAnchorEl(newAnchorElArray);
-  };
-
+const OrdersTableView = () => {
   const dispatch = useDispatch();
 
   const { adminOrder } = useSelector((store) => store);
-
-  const handleShippedOrder = (orderId) => {
-    dispatch(shipOrder(orderId));
-    handleClose();
-  };
-
-  const handleConfirmedOrder = (orderId) => {
-    dispatch(confirmOrder(orderId));
-    handleClose();
-  };
-
-  const handleDeliveredOrder = (orderId) => {
-    dispatch(deliveredOrder(orderId));
-    handleClose();
-  };
-
-  const handleDeleteOrder = (orderId) => {
-    dispatch(deleteOrder(orderId));
-    handleClose();
-  };
 
   useEffect(() => {
     dispatch(getOrders());
@@ -77,7 +34,7 @@ const OrdersTable = () => {
   return (
     <div className="p-10">
       <Card className="mt-2 bg-[#1b1b1b]">
-        <CardHeader title="All Products" />
+        <CardHeader title="Recent Orders" />
       </Card>
 
       <TableContainer component={Paper}>
@@ -89,9 +46,6 @@ const OrdersTable = () => {
               <TableCell align="left">Id</TableCell>
               <TableCell align="left">Price</TableCell>
               <TableCell align="left">Status</TableCell>
-              <TableCell align="left">Update</TableCell>
-
-              <TableCell align="left">Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -134,46 +88,6 @@ const OrdersTable = () => {
                     {item.orderStatus}
                   </span>{' '}
                 </TableCell>
-
-                <TableCell align="left">
-                  <Button
-                    id="basic-button"
-                    aria-haspopup="true"
-                    onClick={(e) => handleClick(e, index)}
-                    aria-controls={`basic-menu-${item.id}`}
-                    aria-expanded={Boolean(anchorEl[index])}
-                  >
-                    Status
-                  </Button>
-                  <Menu
-                    id={`basic-menu-${item.id}`}
-                    anchorEl={anchorEl[index]}
-                    open={Boolean(anchorEl[index])}
-                    onClose={() => handleClose(index)}
-                    MenuListProps={{
-                      'aria-labelledby': 'basic-button',
-                    }}
-                  >
-                    <MenuItem onClick={() => handleConfirmedOrder(item.id)}>
-                      Confirmed Order
-                    </MenuItem>
-                    <MenuItem onClick={() => handleShippedOrder(item.id)}>
-                      Shipped Order
-                    </MenuItem>
-                    <MenuItem onClick={() => handleDeliveredOrder(item.id)}>
-                      Delivered Order
-                    </MenuItem>
-                  </Menu>
-                </TableCell>
-
-                <TableCell align="left">
-                  <Button
-                    onClick={() => handleDeleteOrder(item.id)}
-                    variant="outlined"
-                  >
-                    Delete
-                  </Button>
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -183,4 +97,4 @@ const OrdersTable = () => {
   );
 };
 
-export default OrdersTable;
+export default OrdersTableView;
