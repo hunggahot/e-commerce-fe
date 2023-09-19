@@ -26,7 +26,6 @@ import {
 
 const OrdersTable = () => {
   const [anchorEl, setAnchorEl] = useState([]);
-  const open = Boolean(anchorEl);
 
   const handleClick = (e, index) => {
     const newAnchorElArray = [...anchorEl];
