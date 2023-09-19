@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardHeader,
+  Input,
   Paper,
   Table,
   TableBody,
@@ -43,6 +44,12 @@ const ProductsTable = () => {
 
   return (
     <div className="p-5">
+      {/* File input for Excel import */}
+      <Input type="file" accept=".xlsx" onChange={handleFileChange} />
+      <Button variant="contained" onClick={handleImportClick}>
+        Import Excel
+      </Button>
+
       <Card className="mt-2 bg-[#1b1b1b]">
         <CardHeader title="All Products" />
       </Card>

@@ -6,11 +6,16 @@ import {
   FIND_PRODUCT_BY_ID_FAILURE,
   FIND_PRODUCT_BY_ID_REQUEST,
   FIND_PRODUCT_BY_ID_SUCCESS,
+  IMPORT_PRODUCTS_FAILURE,
+  IMPORT_PRODUCTS_REQUEST,
+  IMPORT_PRODUCTS_SUCCESS,
 } from './ActionType';
 
 const initialState = {
   products: [],
   product: null,
+  importing: false,
+  importError: null,
   loading: false,
   error: null,
 };
@@ -43,6 +48,26 @@ export const customerProductReducer = (state = initialState, action) => {
     case FIND_PRODUCTS_FAILURE:
     case FIND_PRODUCT_BY_ID_FAILURE:
       return { ...state, loading: false, error: action.payload };
+
+    case IMPORT_PRODUCTS_REQUEST:
+      return {
+        ...state,
+        importing: true,
+        importError: null,
+      };
+
+    case IMPORT_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        importing: false,
+      };
+
+    case IMPORT_PRODUCTS_FAILURE:
+      return {
+        ...state,
+        importing: false,
+        importError: action.payload,
+      };
 
     default:
       return state;

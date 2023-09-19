@@ -11,6 +11,9 @@ import {
   FIND_PRODUCT_BY_ID_FAILURE,
   FIND_PRODUCT_BY_ID_REQUEST,
   FIND_PRODUCT_BY_ID_SUCCESS,
+  IMPORT_PRODUCTS_FAILURE,
+  IMPORT_PRODUCTS_REQUEST,
+  IMPORT_PRODUCTS_SUCCESS,
 } from './ActionType';
 
 import { API_BASE_URL, api } from '../../config/apiConfig';
@@ -88,5 +91,40 @@ export const deleteProduct = (productId) => async (dispatch) => {
     });
   } catch (error) {
     dispatch({ type: DELETE_PRODUCTS_FAILURE, payload: error.message });
+  }
+};
+
+export const importProductsRequest = () => ({
+  type: IMPORT_PRODUCTS_REQUEST,
+});
+
+export const importProductsSuccess = () => ({
+  type: IMPORT_PRODUCTS_SUCCESS,
+});
+
+export const importProductsFailure = (error) => ({
+  type: IMPORT_PRODUCTS_FAILURE,
+  payload: error,
+});
+
+export const importProducts = (file) => async (dispatch) => {
+  dispatch(importProductsRequest());
+
+  try {
+    // Make an API call to send the Excel file for import
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await api.post('/api/v1/import', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    // Dispatch success action
+    dispatch(importProductsSuccess());
+  } catch (error) {
+    // Dispatch failure action with the error message
+    dispatch(importProductsFailure(error.message));
   }
 };
