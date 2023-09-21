@@ -4,6 +4,10 @@ import {
   GET_USER_FAILURE,
   GET_USER_REQUEST,
   GET_USER_SUCCESS,
+  GOOGLE_SIGNIN_FAILURE,
+  GOOGLE_SIGNIN_REQUEST,
+  GOOGLE_SIGNIN_SUCCESS,
+  GOOGLE_SIGN_OUT,
   LOGIN_FAILURE,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -78,5 +82,43 @@ export const getUser = (jwt) => async (dispatch) => {
 
 export const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT, payload: null });
+  localStorage.clear();
+};
+
+const googleSignInRequest = () => ({ type: GOOGLE_SIGNIN_REQUEST });
+const googleSignInSuccess = (user) => ({
+  type: GOOGLE_SIGNIN_SUCCESS,
+  payload: user,
+});
+const googleSignInFailure = (error) => ({
+  type: GOOGLE_SIGNIN_FAILURE,
+  payload: error,
+});
+
+export const googleSignIn = () => async (dispatch) => {
+  dispatch(googleSignInRequest());
+
+  try {
+    const auth2 = window.gapi.auth2.getAuthInstance();
+    const googleUser = await auth2.signIn();
+
+    const idToken = googleUser.getAuthInstance().id_token;
+
+    const response = await axios.post(`${API_BASE_URL}/auth/google/signin`);
+
+    const user = response.data;
+
+    if (user.jwt) {
+      localStorage.setItem('jwt', user.jwt);
+    }
+
+    dispatch(googleSignInSuccess(user.jwt));
+  } catch (error) {
+    dispatch(googleSignInFailure(error.message));
+  }
+};
+
+export const googleSignOut = () => (dispatch) => {
+  dispatch({ type: GOOGLE_SIGN_OUT });
   localStorage.clear();
 };

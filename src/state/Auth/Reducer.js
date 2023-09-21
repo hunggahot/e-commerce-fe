@@ -2,6 +2,10 @@ import {
   GET_USER_FAILURE,
   GET_USER_REQUEST,
   GET_USER_SUCCESS,
+  GOOGLE_SIGNIN_FAILURE,
+  GOOGLE_SIGNIN_REQUEST,
+  GOOGLE_SIGNIN_SUCCESS,
+  GOOGLE_SIGN_OUT,
   LOGIN_FAILURE,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -16,6 +20,8 @@ const initialState = {
   isLoading: false,
   error: null,
   jwt: null,
+  googleSignInLoading: false,
+  googleSignInError: null,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -36,7 +42,26 @@ export const authReducer = (state = initialState, action) => {
     case GET_USER_FAILURE:
       return { ...state, isLoading: false, error: action.payload };
 
+    case GOOGLE_SIGNIN_REQUEST:
+      return { ...state, googleSignInLoading: true, googleSignInError: null };
+    case GOOGLE_SIGNIN_SUCCESS:
+      return {
+        ...state,
+        googleSignInLoading: false,
+        googleSignInError: null,
+        jwt: action.payload,
+      };
+    case GOOGLE_SIGNIN_FAILURE:
+      return {
+        ...state,
+        googleSignInLoading: false,
+        googleSignInError: action.payload,
+      };
+
     case LOGOUT:
+      return { ...initialState };
+
+    case GOOGLE_SIGN_OUT:
       return { ...initialState };
 
     default:

@@ -63,7 +63,7 @@ const ProductsTableView = () => {
                 <TableCell align="left" scope="row">
                   {item.title}
                 </TableCell>
-                <TableCell align="left">{item.category.name}</TableCell>
+                <TableCell align="left">{item.category?.name}</TableCell>
                 <TableCell align="left">{item.price}</TableCell>
                 <TableCell align="left">{item.quantity}</TableCell>
               </TableRow>

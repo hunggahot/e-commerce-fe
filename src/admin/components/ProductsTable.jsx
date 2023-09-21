@@ -12,13 +12,50 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import React, { useEffect } from 'react';
-import { deleteProduct, findProducts } from '../../state/Product/Action';
+import React, { useEffect, useState } from 'react';
+import {
+  deleteProduct,
+  findProducts,
+  importProducts,
+} from '../../state/Product/Action';
 import { useDispatch, useSelector } from 'react-redux';
+import * as XLSX from 'xlsx';
 
 const ProductsTable = () => {
   const dispatch = useDispatch();
   const { products } = useSelector((store) => store);
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    const seletedFile = e.target.files[0];
+    setFile(seletedFile);
+  };
+
+  const handleImportClick = () => {
+    if (file) {
+      // Read the uploaded Excel file
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+
+        // Assuming the first sheet in the Excel file contains your data
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const importedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+        // Dispatch the importProducts action with the imported data
+        dispatch(importProducts(importedData));
+
+        // Handle the imported data as needed (e.g., send it to the server)
+        console.log('Imported data:', importedData);
+      };
+
+      reader.readAsArrayBuffer(file);
+    } else {
+      // Handle no file selected
+      console.log('No file selected for import.');
+    }
+  };
 
   console.log('products --- ', products);
 
@@ -45,7 +82,12 @@ const ProductsTable = () => {
   return (
     <div className="p-5">
       {/* File input for Excel import */}
-      <Input type="file" accept=".xlsx" onChange={handleFileChange} />
+      <Input
+        type="file"
+        accept=".xlsx"
+        name="file"
+        onChange={handleFileChange}
+      />
       <Button variant="contained" onClick={handleImportClick}>
         Import Excel
       </Button>
@@ -79,7 +121,7 @@ const ProductsTable = () => {
                 <TableCell align="left" scope="row">
                   {item.title}
                 </TableCell>
-                <TableCell align="left">{item.category.name}</TableCell>
+                <TableCell align="left">{item.category?.name}</TableCell>
                 <TableCell align="left">{item.price}</TableCell>
                 <TableCell align="left">{item.quantity}</TableCell>
 

@@ -2,7 +2,7 @@ import { Grid, TextField, Button } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../state/Auth/Action';
+import { googleSignIn, login } from '../../state/Auth/Action';
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -21,6 +21,10 @@ const LoginForm = () => {
     };
     dispatch(login(userData));
     console.log('userData ', userData);
+  };
+
+  const handleGoogleSignIn = () => {
+    dispatch(googleSignIn());
   };
 
   return (
@@ -91,13 +95,17 @@ const LoginForm = () => {
                 >
                   Sign in
                 </Button>
-                <button className="flex flex-wrap justify-center w-full border border-gray-300 hover:border-gray-500 px-2 py-1.5 rounded-md">
+                <Button
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                  className="flex flex-wrap justify-center w-full border border-gray-300 hover:border-gray-500 px-2 py-1.5 rounded-md"
+                >
                   <img
                     className="w-5 mr-2"
                     src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
                   />
                   Sign in with Google
-                </button>
+                </Button>
               </div>
             </form>
             {/* Footer */}

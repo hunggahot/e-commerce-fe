@@ -16,6 +16,7 @@ const initialState = {
   product: null,
   importing: false,
   importError: null,
+  importedData: null,
   loading: false,
   error: null,
 };
@@ -60,6 +61,8 @@ export const customerProductReducer = (state = initialState, action) => {
       return {
         ...state,
         importing: false,
+        importError: null,
+        importedData: action.payload,
       };
 
     case IMPORT_PRODUCTS_FAILURE:

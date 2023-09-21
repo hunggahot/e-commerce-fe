@@ -94,37 +94,25 @@ export const deleteProduct = (productId) => async (dispatch) => {
   }
 };
 
-export const importProductsRequest = () => ({
-  type: IMPORT_PRODUCTS_REQUEST,
-});
-
-export const importProductsSuccess = () => ({
-  type: IMPORT_PRODUCTS_SUCCESS,
-});
-
-export const importProductsFailure = (error) => ({
-  type: IMPORT_PRODUCTS_FAILURE,
-  payload: error,
-});
-
 export const importProducts = (file) => async (dispatch) => {
-  dispatch(importProductsRequest());
+  dispatch({ type: IMPORT_PRODUCTS_REQUEST });
 
   try {
     // Make an API call to send the Excel file for import
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await api.post('/api/v1/import', formData, {
+    const { data } = await api.post('/api/v1/admin/products/import', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
+    console.log('imported products: ', data);
 
     // Dispatch success action
-    dispatch(importProductsSuccess());
+    dispatch({ type: IMPORT_PRODUCTS_SUCCESS, payload: data });
   } catch (error) {
     // Dispatch failure action with the error message
-    dispatch(importProductsFailure(error.message));
+    dispatch({ type: IMPORT_PRODUCTS_FAILURE, payload: error.message });
   }
 };
