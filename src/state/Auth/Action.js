@@ -15,6 +15,9 @@ import {
   REGISTER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  UPDATE_USER_PROFILE_FAILURE,
+  UPDATE_USER_PROFILE_REQUEST,
+  UPDATE_USER_PROFILE_SUCCESS,
 } from './ActionType';
 
 const registerRequest = () => ({ type: REGISTER_REQUEST });
@@ -80,6 +83,36 @@ export const getUser = (jwt) => async (dispatch) => {
   }
 };
 
+const updateUserProfileRequest = () => ({ type: UPDATE_USER_PROFILE_REQUEST });
+const updateUserProfileSuccess = (user) => ({
+  type: UPDATE_USER_PROFILE_SUCCESS,
+  payload: user,
+});
+const updateUserProfileFailure = (error) => ({
+  type: UPDATE_USER_PROFILE_FAILURE,
+  payload: error,
+});
+
+export const updateUserProfile = (jwt, updatedUserData) => async (dispatch) => {
+  dispatch(updateUserProfileRequest());
+
+  try {
+    const response = await axios.put(
+      `${API_BASE_URL}/api/v1/users/profile`,
+      updatedUserData,
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      },
+    );
+    const updatedUser = response.data;
+    dispatch(updateUserProfileSuccess(updatedUser));
+  } catch (error) {
+    dispatch(updateUserProfileFailure(error.message));
+  }
+};
+
 export const logout = () => (dispatch) => {
   dispatch({ type: LOGOUT, payload: null });
   localStorage.clear();
@@ -104,7 +137,7 @@ export const googleSignIn = () => async (dispatch) => {
 
     const idToken = googleUser.getAuthInstance().id_token;
 
-    const response = await axios.post(`${API_BASE_URL}/auth/google/signin`);
+    const response = await axios.post(`${API_BASE_URL}/auth/oauth2signin`);
 
     const user = response.data;
 

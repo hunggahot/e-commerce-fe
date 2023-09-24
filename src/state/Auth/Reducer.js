@@ -13,6 +13,9 @@ import {
   REGISTER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  UPDATE_USER_PROFILE_FAILURE,
+  UPDATE_USER_PROFILE_REQUEST,
+  UPDATE_USER_PROFILE_SUCCESS,
 } from './ActionType';
 
 const initialState = {
@@ -63,6 +66,28 @@ export const authReducer = (state = initialState, action) => {
 
     case GOOGLE_SIGN_OUT:
       return { ...initialState };
+
+    case UPDATE_USER_PROFILE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case UPDATE_USER_PROFILE_SUCCESS:
+      return {
+        ...state,
+        user: action.payload, // Update the user's profile data
+        loading: false,
+        error: null,
+      };
+
+    case UPDATE_USER_PROFILE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload, // Store the error message
+      };
 
     default:
       return state;
