@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../../config/apiConfig';
+import { api } from '../../config/apiConfig';
 import {
   GET_USER_FAILURE,
   GET_USER_REQUEST,
@@ -28,7 +27,7 @@ export const register = (userData) => async (dispatch) => {
   dispatch(registerRequest());
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/signup`, userData);
+    const response = await api.post(`/auth/signup`, userData);
     const user = response.data;
 
     if (user.jwt) {
@@ -49,12 +48,13 @@ export const login = (userData) => async (dispatch) => {
   dispatch(loginRequest());
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/signin`, userData);
+    const response = await api.post(`/auth/signin`, userData);
     const user = response.data;
 
     if (user.jwt) {
       localStorage.setItem('jwt', user.jwt);
     }
+    console.log('user ', user);
     dispatch(loginSuccess(user.jwt));
   } catch (error) {
     dispatch(loginFailure(error.message));
@@ -69,15 +69,18 @@ export const getUser = (jwt) => async (dispatch) => {
   dispatch(getUserRequest());
 
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/v1/users/profile`, {
+    const response = await api.get(`/api/v1/users/profile`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
     });
 
+    if (user.jwt) {
+      localStorage.setItem('jwt', user.jwt);
+    }
     const user = response.data;
     console.log('user ', user);
-    dispatch(getUserSuccess(user));
+    dispatch(getUserSuccess(user.jwt));
   } catch (error) {
     dispatch(getUserFailure(error.message));
   }
@@ -97,15 +100,11 @@ export const updateUserProfile = (jwt, updatedUserData) => async (dispatch) => {
   dispatch(updateUserProfileRequest());
 
   try {
-    const response = await axios.put(
-      `${API_BASE_URL}/api/v1/users/profile`,
-      updatedUserData,
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
+    const response = await api.put(`/api/v1/users/profile`, updatedUserData, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
       },
-    );
+    });
     const updatedUser = response.data;
     dispatch(updateUserProfileSuccess(updatedUser));
   } catch (error) {
@@ -137,7 +136,7 @@ export const googleSignIn = () => async (dispatch) => {
 
     const idToken = googleUser.getAuthInstance().id_token;
 
-    const response = await axios.post(`${API_BASE_URL}/auth/oauth2signin`);
+    const response = await api.post(`/auth/oauth2signin`);
 
     const user = response.data;
 

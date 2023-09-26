@@ -6,7 +6,7 @@ import { getUser, updateUserProfile } from '../../../state/Auth/Action';
 const Profile = () => {
   const dispatch = useDispatch();
   const jwt = localStorage.getItem('jwt');
-  const { user } = useSelector((store) => store);
+  const { auth } = useSelector((store) => store);
   const [isEditing, setIsEditing] = useState(false);
   const [updatedUser, setUpdatedUser] = useState({});
 
@@ -17,8 +17,10 @@ const Profile = () => {
   }, [dispatch, jwt]);
 
   useEffect(() => {
-    setUpdatedUser(user);
-  }, [user]);
+    console.log('User Data:', auth.user);
+
+    setUpdatedUser(auth.user);
+  }, [auth.user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +31,12 @@ const Profile = () => {
   };
 
   const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent form submission
+
     try {
+      // Debugging: Check if updateUserProfile action is being called
+      console.log('Updating Profile:', updatedUser);
+
       dispatch(updateUserProfile(jwt, updatedUser));
 
       setIsEditing(false);
@@ -76,11 +83,11 @@ const Profile = () => {
             </form>
           ) : (
             <div>
-              {user ? (
+              {auth.user ? (
                 <>
-                  <p>First Name: {user.firstName}</p>
-                  <p>Last Name: {user.lastName}</p>
-                  <p>Email: {user.email}</p>
+                  <p>First Name: {auth.user.firstName}</p>
+                  <p>Last Name: {auth.user.lastName}</p>
+                  <p>Email: {auth.user.email}</p>
                   {/* Display other user profile fields here */}
                   <Button onClick={() => setIsEditing(true)}>Edit</Button>
                 </>
