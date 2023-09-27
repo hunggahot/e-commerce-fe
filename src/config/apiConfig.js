@@ -11,3 +11,19 @@ export const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+// Add an Axios request interceptor to set the Authorization header
+api.interceptors.request.use(
+  (config) => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      config.headers.Authorization = `Bearer ${jwt}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
+export default api;

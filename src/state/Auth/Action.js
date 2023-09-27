@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { api, API_BASE_URL } from '../../config/apiConfig';
+import { API_BASE_URL } from '../../config/apiConfig';
 import {
   GET_USER_FAILURE,
   GET_USER_REQUEST,
@@ -28,7 +28,7 @@ export const register = (userData) => async (dispatch) => {
   dispatch(registerRequest());
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/signup`, userData);
+    const response = await api.post(`/auth/signup`, userData);
     const user = response.data;
 
     if (user.jwt) {
@@ -49,7 +49,7 @@ export const login = (userData) => async (dispatch) => {
   dispatch(loginRequest());
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/signin`, userData);
+    const response = await api.post(`/auth/signin`, userData);
     const user = response.data;
 
     if (user.jwt) {
@@ -70,7 +70,7 @@ export const getUser = (jwt) => async (dispatch) => {
   dispatch(getUserRequest());
 
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/v1/users/profile`, {
+    const response = await api.get(`/api/v1/users/profile`, {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -101,15 +101,11 @@ export const updateUserProfile = (jwt, updatedUserData) => async (dispatch) => {
   dispatch(updateUserProfileRequest());
 
   try {
-    const response = await axios.put(
-      `${API_BASE_URL}/api/v1/users/profile`,
-      updatedUserData,
-      {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
+    const response = await api.put(`/api/v1/users/profile`, updatedUserData, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
       },
-    );
+    });
     const updatedUser = response.data;
     dispatch(updateUserProfileSuccess(updatedUser));
   } catch (error) {
