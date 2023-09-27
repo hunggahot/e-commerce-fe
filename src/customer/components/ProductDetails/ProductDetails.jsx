@@ -2,7 +2,14 @@ import { useEffect, useState } from 'react';
 import { StarIcon } from '@heroicons/react/20/solid';
 import { RadioGroup } from '@headlessui/react';
 import { product } from './ProductData';
-import { Box, Button, Grid, LinearProgress, Rating } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  LinearProgress,
+  Rating,
+  TextField,
+} from '@mui/material';
 import ProductReviewCard from './ProductReviewCard';
 import HomeSectionCard from '../HomeSectionCard/HomeSectionCard';
 import { women_aodai } from '../../../data/women_aodai';
@@ -10,22 +17,38 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { findProductById } from '../../../state/Product/Action';
 import { addItemToCart } from '../../../state/Cart/Action';
+import { createReview, getProductReviews } from '../../../state/Review/Action';
 
-const reviews = { href: '#', average: 4, totalCount: 117 };
+// const reviews = { href: '#', average: 4, totalCount: 117 };
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function ProductDetails() {
-  const [selectedSize, setSelectedSize] = useState('');
-
   const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
-  const { products } = useSelector((store) => store);
+  const { products, reviews } = useSelector((store) => store);
+
+  const [selectedSize, setSelectedSize] = useState('');
+  const [reviewText, setReviewText] = useState('');
 
   console.log('---- ', params.productId);
+
+  const handleReviewSubmit = () => {
+    if (reviewText.trim() !== '') {
+      const productId = params.productId;
+      dispatch(createReview(productId, reviewText));
+      setReviewText('');
+    }
+  };
+
+  useEffect(() => {
+    const data = { productId: params.productId };
+    dispatch(findProductById(data));
+    dispatch(getProductReviews(params.productId)); // Fetch product reviews
+  }, [dispatch, params.productId]);
 
   const handleAddToCart = () => {
     const data = { productId: params.productId, size: selectedSize.name };
@@ -33,11 +56,6 @@ export default function ProductDetails() {
     dispatch(addItemToCart(data));
     navigate('/cart');
   };
-
-  useEffect(() => {
-    const data = { productId: params.productId };
-    dispatch(findProductById(data));
-  }, [params.productId]);
 
   return (
     <div className="bg-white lg:px-20">
@@ -275,9 +293,31 @@ export default function ProductDetails() {
             <Grid container spacing={7}>
               <Grid item xs={7}>
                 <div className="space-y-5">
-                  {[1, 1, 1, 1].map((item) => (
-                    <ProductReviewCard />
-                  ))}
+                  {Array.isArray(reviews.reviews) ? (
+                    reviews.reviews.map((review) => (
+                      <ProductReviewCard key={review.id} review={review} />
+                    ))
+                  ) : (
+                    <p>No reviews available.</p>
+                  )}
+
+                  <TextField
+                    label="Write a review"
+                    variant="outlined"
+                    fullWidth
+                    multiline
+                    rows={3}
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleReviewSubmit}
+                    disabled={!reviewText.trim()} // Disable the button if reviewText is empty
+                  >
+                    Submit Review
+                  </Button>
                 </div>
               </Grid>
 

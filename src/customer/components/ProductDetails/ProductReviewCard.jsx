@@ -1,7 +1,10 @@
 import { Avatar, Box, Grid, Rating } from '@mui/material';
 import React from 'react';
 
-const ProductReviewCard = () => {
+const ProductReviewCard = ({ review }) => {
+  if (!review || !review.user) {
+    return null;
+  }
   return (
     <div>
       <Grid container spacing={2} gap={3}>
@@ -11,7 +14,7 @@ const ProductReviewCard = () => {
               className="text-white"
               sx={{ width: 56, height: 56, bgcolor: '#9155fd' }}
             >
-              H
+              {review.user?.firstName[0] || ''}
             </Avatar>
           </Box>
         </Grid>
@@ -19,16 +22,20 @@ const ProductReviewCard = () => {
         <Grid item xs={9}>
           <div className="space-y-2">
             <div>
-              <p className="font-semibold text-lg">Hung</p>
-              <p className="opacity-70">August 11, 2023</p>
+              <p className="font-semibold text-lg">
+                {review.user?.firstName || ''}
+              </p>
+              <p className="opacity-70">{review.createdAt}</p>
             </div>
           </div>
 
-          <Rating value={4.5} name="half-rating" readOnly precision={0.5} />
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tenetur
-            exercitationem minus corrupti
-          </p>
+          <Rating
+            value={review.rating}
+            name="product-rating"
+            readOnly
+            precision={0.5}
+          />
+          <p>{review.review}</p>
         </Grid>
       </Grid>
     </div>
