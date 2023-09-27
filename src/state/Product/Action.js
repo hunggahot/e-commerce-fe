@@ -16,7 +16,7 @@ import {
   IMPORT_PRODUCTS_SUCCESS,
 } from './ActionType';
 
-import { API_BASE_URL, api } from '../../config/apiConfig';
+import { api } from '../../config/apiConfig';
 
 export const findProducts = (reqData) => async (dispatch) => {
   dispatch({ type: FIND_PRODUCTS_REQUEST });
@@ -51,9 +51,8 @@ export const findProductById = (reqData) => async (dispatch) => {
   const { productId } = reqData;
 
   try {
-    const { data } = await api.get(
-      `${API_BASE_URL}/api/v1/products/id/${productId}`,
-    );
+    const { data } = await api.get(`/api/v1/products/id/${productId}`);
+    console.log('data ', data);
 
     dispatch({ type: FIND_PRODUCT_BY_ID_SUCCESS, payload: data });
   } catch (error) {

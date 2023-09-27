@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../../config/apiConfig';
+import { api, API_BASE_URL } from '../../config/apiConfig';
 import {
   GET_USER_FAILURE,
   GET_USER_REQUEST,
@@ -55,6 +55,7 @@ export const login = (userData) => async (dispatch) => {
     if (user.jwt) {
       localStorage.setItem('jwt', user.jwt);
     }
+    console.log('user ', user);
     dispatch(loginSuccess(user.jwt));
   } catch (error) {
     dispatch(loginFailure(error.message));
@@ -75,9 +76,12 @@ export const getUser = (jwt) => async (dispatch) => {
       },
     });
 
+    if (user.jwt) {
+      localStorage.setItem('jwt', user.jwt);
+    }
     const user = response.data;
     console.log('user ', user);
-    dispatch(getUserSuccess(user));
+    dispatch(getUserSuccess(user.jwt));
   } catch (error) {
     dispatch(getUserFailure(error.message));
   }
@@ -137,7 +141,7 @@ export const googleSignIn = () => async (dispatch) => {
 
     const idToken = googleUser.getAuthInstance().id_token;
 
-    const response = await axios.post(`${API_BASE_URL}/auth/oauth2signin`);
+    const response = await api.post(`/auth/oauth2signin`);
 
     const user = response.data;
 

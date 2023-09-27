@@ -28,7 +28,7 @@ const initialState = {
   error: '',
 };
 
-const adminOrderReducer = (state = initialState, action) => {
+export const adminOrderReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ORDERS_REQUEST:
       return {
@@ -130,5 +130,3 @@ const adminOrderReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-export default adminOrderReducer;

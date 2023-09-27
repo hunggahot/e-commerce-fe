@@ -13,7 +13,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import AuthModal from '../../auth/AuthModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser, logout } from '../../../state/Auth/Action';
-import './Navigation.scss';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -25,8 +24,6 @@ export default function Navigation() {
 
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [hoveredCategory, setHoveredCategory] = useState(null);
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
   const openUserMenu = Boolean(anchorEl);
   const jwt = localStorage.getItem('jwt');
   const { auth } = useSelector((store) => store);
@@ -39,14 +36,6 @@ export default function Navigation() {
 
   const handleCloseUserMenu = (event) => {
     setAnchorEl(null);
-  };
-
-  const handleCategoryMouseEnter = (category) => {
-    setHoveredCategory(category);
-  };
-
-  const handleCategoryMouseLeave = () => {
-    setHoveredCategory(null);
   };
 
   const handleOpen = () => {
@@ -84,7 +73,7 @@ export default function Navigation() {
   };
 
   return (
-    <div className="nav-wrapper relative bg-white z-50 mb-10">
+    <div className="bg-white z-50 mb-10">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -286,154 +275,135 @@ export default function Navigation() {
               </div>
 
               {/* Flyout menus */}
-              <div className="flex flex-grow justify-center">
-                <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
-                  <div className="flex h-full space-x-8">
-                    {navigation.categories.map((category) => (
-                      <Popover
-                        key={category.name}
-                        className="flex"
-                        onMouseEnter={() => setIsPanelOpen(true)}
-                        onMouseLeave={() => setIsPanelOpen(false)}
-                      >
-                        {({ open, close }) => (
-                          <>
-                            <div
-                              className="relative flex"
-                              onMouseEnter={() =>
-                                handleCategoryMouseEnter(category)
-                              }
-                              onMouseLeave={handleCategoryMouseLeave}
+              <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch z-10">
+                <div className="flex h-full space-x-8">
+                  {navigation.categories.map((category) => (
+                    <Popover key={category.name} className="flex">
+                      {({ open, close }) => (
+                        <>
+                          <div className="relative flex">
+                            <Popover.Button
+                              className={classNames(
+                                open
+                                  ? 'border-indigo-600 text-indigo-600'
+                                  : 'border-transparent text-gray-700 hover:text-gray-800',
+                                'relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out',
+                              )}
                             >
-                              <Popover.Button
-                                className={classNames(
-                                  open || hoveredCategory == category
-                                    ? 'border-indigo-600 text-indigo-600'
-                                    : 'border-transparent text-gray-700 hover:text-gray-800',
-                                  'relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out',
-                                )}
-                              >
-                                {category.name}
-                              </Popover.Button>
-                            </div>
+                              {category.name}
+                            </Popover.Button>
+                          </div>
 
-                            <Transition
-                              as={Fragment}
-                              show={open || hoveredCategory == category}
-                              enter="transition ease-in-out duration-300 transform"
-                              enterFrom="opacity-0 -translate-y-2"
-                              enterTo="opacity-100 translate-y-0"
-                              leave="transition ease-in-out duration-300 transform"
-                              leaveFrom="opacity-100 translate-y-0"
-                              leaveTo="opacity-0 -translate-y-2"
-                            >
-                              <Popover.Panel
-                                className={`popover-panel ${
-                                  isPanelOpen ? 'open' : ''
-                                }`}
-                                style={{ minWidth: '16rem' }}
-                              >
-                                {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
-                                <div
-                                  className="absolute inset-0 top-1/2 bg-white shadow"
-                                  aria-hidden="true"
-                                />
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-200"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="transition ease-in duration-150"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                          >
+                            <Popover.Panel className="absolute inset-x-0 top-full text-sm text-gray-500">
+                              {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
+                              <div
+                                className="absolute inset-0 top-1/2 bg-white shadow"
+                                aria-hidden="true"
+                              />
 
-                                <div className="relative bg-white">
-                                  <div className="mx-auto max-w-7xl px-8">
-                                    <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
-                                      <div className="col-start-2 grid grid-cols-2 gap-x-8">
-                                        {category.featured.map((item) => (
-                                          <div
-                                            key={item.name}
-                                            className="group relative text-base sm:text-sm"
+                              <div className="relative bg-white">
+                                <div className="mx-auto max-w-7xl px-8">
+                                  <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
+                                    <div className="col-start-2 grid grid-cols-2 gap-x-8">
+                                      {category.featured.map((item) => (
+                                        <div
+                                          key={item.name}
+                                          className="group relative text-base sm:text-sm"
+                                        >
+                                          <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                                            <img
+                                              src={item.imageSrc}
+                                              alt={item.imageAlt}
+                                              className="object-cover object-center"
+                                            />
+                                          </div>
+                                          <a
+                                            href={item.href}
+                                            className="mt-6 block font-medium text-gray-900"
                                           >
-                                            <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                              <img
-                                                src={item.imageSrc}
-                                                alt={item.imageAlt}
-                                                className="object-cover object-center"
-                                              />
-                                            </div>
-                                            <a
-                                              href={item.href}
-                                              className="mt-6 block font-medium text-gray-900"
-                                            >
-                                              <span
-                                                className="absolute inset-0 z-10"
-                                                aria-hidden="true"
-                                              />
-                                              {item.name}
-                                            </a>
-                                            <p
+                                            <span
+                                              className="absolute inset-0 z-10"
                                               aria-hidden="true"
-                                              className="mt-1"
-                                            >
-                                              Shop now
-                                            </p>
-                                          </div>
-                                        ))}
-                                      </div>
-                                      <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
-                                        {category.sections.map((section) => (
-                                          <div key={section.name}>
-                                            <p
-                                              id={`${section.name}-heading`}
-                                              className="font-medium text-gray-900"
-                                            >
-                                              {section.name}
-                                            </p>
-                                            <ul
-                                              role="list"
-                                              aria-labelledby={`${section.name}-heading`}
-                                              className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                            >
-                                              {section.items.map((item) => (
-                                                <li
-                                                  key={item.name}
-                                                  className="flex"
+                                            />
+                                            {item.name}
+                                          </a>
+                                          <p
+                                            aria-hidden="true"
+                                            className="mt-1"
+                                          >
+                                            Shop now
+                                          </p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                    <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
+                                      {category.sections.map((section) => (
+                                        <div key={section.name}>
+                                          <p
+                                            id={`${section.name}-heading`}
+                                            className="font-medium text-gray-900"
+                                          >
+                                            {section.name}
+                                          </p>
+                                          <ul
+                                            role="list"
+                                            aria-labelledby={`${section.name}-heading`}
+                                            className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
+                                          >
+                                            {section.items.map((item) => (
+                                              <li
+                                                key={item.name}
+                                                className="flex"
+                                              >
+                                                <p
+                                                  onClick={() =>
+                                                    handleCategoryClick(
+                                                      category,
+                                                      section,
+                                                      item,
+                                                      close,
+                                                    )
+                                                  }
+                                                  className="cursor-pointer hover:text-gray-800"
                                                 >
-                                                  <p
-                                                    onClick={() =>
-                                                      handleCategoryClick(
-                                                        category,
-                                                        section,
-                                                        item,
-                                                        close,
-                                                      )
-                                                    }
-                                                    className="cursor-pointer hover:text-gray-800"
-                                                  >
-                                                    {item.name}
-                                                  </p>
-                                                </li>
-                                              ))}
-                                            </ul>
-                                          </div>
-                                        ))}
-                                      </div>
+                                                  {item.name}
+                                                </p>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        </div>
+                                      ))}
                                     </div>
                                   </div>
                                 </div>
-                              </Popover.Panel>
-                            </Transition>
-                          </>
-                        )}
-                      </Popover>
-                    ))}
+                              </div>
+                            </Popover.Panel>
+                          </Transition>
+                        </>
+                      )}
+                    </Popover>
+                  ))}
 
-                    {navigation.pages.map((page) => (
-                      <a
-                        key={page.name}
-                        href={page.href}
-                        className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-700"
-                      >
-                        {page.name}
-                      </a>
-                    ))}
-                  </div>
-                </Popover.Group>
-              </div>
+                  {navigation.pages.map((page) => (
+                    <a
+                      key={page.name}
+                      href={page.href}
+                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-700"
+                    >
+                      {page.name}
+                    </a>
+                  ))}
+                </div>
+              </Popover.Group>
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
@@ -463,7 +433,7 @@ export default function Navigation() {
                           'aria-labelledby': 'basic-button',
                         }}
                       >
-                        <MenuItem onClick={() => navigate('/account/profile')}>
+                        <MenuItem onClick={handleCloseUserMenu}>
                           Profile
                         </MenuItem>
 
@@ -497,10 +467,7 @@ export default function Navigation() {
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <a
-                    onClick={() => navigate('/cart')}
-                    className="group -m-2 flex items-center p-2"
-                  >
+                  <a href="#" className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"

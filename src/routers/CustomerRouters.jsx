@@ -21,12 +21,12 @@ const CustomerRouters = () => {
         <Route path="/login" element={<HomePage />} />
         <Route path="/register" element={<HomePage />} />
 
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" exact element={<HomePage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/:levelOne/:levelTwo/:levelThree" element={<Product />} />
         <Route path="/:product/:productId" element={<ProductDetails />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/account/profile" element={<Profile />} />
+        {/* <Route path="/account/profile" element={<Profile />} /> */}
         <Route path="/account/order" element={<Order />} />
         <Route path="/account/order/:orderId" element={<OrderDetails />} />
       </Routes>
