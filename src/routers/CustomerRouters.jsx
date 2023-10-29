@@ -10,8 +10,10 @@ import ProductDetails from '../customer/components/ProductDetails/ProductDetails
 import Navigation from '../customer/components/Navigation/Navigation';
 import Footer from '../customer/components/Footer/Footer';
 import Profile from '../customer/components/Profile/Profile';
+import { useSelector } from 'react-redux';
 
 const CustomerRouters = () => {
+  const auth = useSelector((store) => store.auth);
   return (
     <div>
       <div>
@@ -26,7 +28,7 @@ const CustomerRouters = () => {
         <Route path="/:levelOne/:levelTwo/:levelThree" element={<Product />} />
         <Route path="/:product/:productId" element={<ProductDetails />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/account/profile" element={<Profile />} />
+        <Route path="/account/profile" element={<Profile user={auth.user} />} />
         <Route path="/account/order" element={<Order />} />
         <Route path="/account/order/:orderId" element={<OrderDetails />} />
       </Routes>

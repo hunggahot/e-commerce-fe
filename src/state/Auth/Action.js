@@ -75,11 +75,8 @@ export const getUser = (jwt) => async (dispatch) => {
       },
     });
 
-    if (user.jwt) {
-      localStorage.setItem('jwt', user.jwt);
-    }
-
     const user = response.data;
+
     console.log('user ', user);
     dispatch(getUserSuccess(user));
   } catch (error) {

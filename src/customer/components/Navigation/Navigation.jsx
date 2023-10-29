@@ -14,6 +14,7 @@ import AuthModal from '../../auth/AuthModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser, logout } from '../../../state/Auth/Action';
 import './Navigation.scss';
+import UserProfile from '../Profile/UserProfile';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -437,51 +438,7 @@ export default function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {auth.user?.firstName ? (
-                    <div>
-                      <Avatar
-                        className="text-white"
-                        onClick={handleUserClick}
-                        aria-controls={open ? 'basic-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        // onClick={handleUserClick}
-                        sx={{
-                          bgcolor: deepPurple[500],
-                          color: 'white',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {auth.user?.firstName[0].toUpperCase()}
-                      </Avatar>
-                      <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={openUserMenu}
-                        onClose={handleCloseUserMenu}
-                        MenuListProps={{
-                          'aria-labelledby': 'basic-button',
-                        }}
-                      >
-                        <MenuItem onClick={() => navigate('/account/profile')}>
-                          Profile
-                        </MenuItem>
-
-                        <MenuItem onClick={() => navigate('/account/order')}>
-                          My Orders
-                        </MenuItem>
-
-                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                      </Menu>
-                    </div>
-                  ) : (
-                    <Button
-                      onClick={handleOpen}
-                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      Signin
-                    </Button>
-                  )}
+                  <UserProfile />
                 </div>
 
                 {/* Search */}
